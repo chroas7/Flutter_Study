@@ -34,17 +34,25 @@ class _MyAppState extends State<MyApp> {
         child: Text(a.toString()),
         onPressed: () {
           showDialog(context: context, builder: (context) {
-            return DialogUI();
+            return DialogUI(state: a, func: IncreaseNum);
           });
         },
       ),
     );
   }
+
+  IncreaseNum()
+  {
+    setState(() {
+      a++;
+    });
+  }
 }
 
 class DialogUI extends StatelessWidget {
-  const DialogUI({Key? key}) : super(key: key);
-
+  DialogUI({Key? key, this.state, this.func}) : super(key: key);
+  var state;
+  var func;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -55,7 +63,13 @@ class DialogUI extends StatelessWidget {
             Column(
                 children: [
                 TextField(),
-                TextButton(onPressed: (){}, child: Text('완료')),
+                TextButton(
+                    child: Text('완료' + state.toString()),
+                    onPressed: (){
+                      func();
+                      Navigator.pop(context);
+                    },
+                ),
                 TextButton(
                   child: Text('취소'),
                   onPressed: (){Navigator.pop(context); })
