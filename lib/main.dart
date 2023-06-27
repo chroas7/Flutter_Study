@@ -1,69 +1,66 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+      home: MyApp()
+     )
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var a = 1;
+  var name = ['김영숙', '홍길동', '피자집'];
+
+  @override
+  build(context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: ListView.builder(
+          itemCount: 3,
+          itemBuilder: (c, i) {
+            return ListTile(
+               title: Text(name[i]),
+            );
+      }),
+
+      floatingActionButton: FloatingActionButton(
+        child: Text(a.toString()),
+        onPressed: () {
+          showDialog(context: context, builder: (context) {
+            return DialogUI();
+          });
+        },
+      ),
+    );
+  }
+}
+
+class DialogUI extends StatelessWidget {
+  const DialogUI({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(
-        title: Text('금호동 3가'),
-        leading: IconButton(icon: Icon(Icons.add_alert), onPressed: () {}),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
-          IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-        ],
-      ),
-      body: Container(
-        height: 150,
-        padding: EdgeInsets.all(10),
-        child: Row(
-          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset("assets/dog.jpg", width:  150,),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Dialog(
+        child: SizedBox(
+          width: 300,
+          height: 300,
+          child:
+            Column(
                 children: [
-                  Text('카메라 팝니다'),
-                  Text('금호동 3가'),
-                  Text('7000원'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(Icons.favorite),
-                      Text('4'),
-                    ],
-                  )
+                TextField(),
+                TextButton(onPressed: (){}, child: Text('완료')),
+                TextButton(
+                  child: Text('취소'),
+                  onPressed: (){Navigator.pop(context); })
                 ],
-              ),
-            )
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-      ),
     ));
   }
 }
