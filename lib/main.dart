@@ -15,15 +15,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var a = 1;
+  var total = 3;
   var name = ['김영숙', '홍길동', '피자집'];
+  var like = [0, 0, 0];
+
+  addOne(){
+    setState(() {
+      total++;
+    });
+  }
+
+  addContact(newName)
+  {
+    setState(() {
+      name.add(newName);
+    });
+  }
 
   @override
   build(context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(total.toString()), ),
       body: ListView.builder(
-          itemCount: 3,
+          itemCount: name.length,
           itemBuilder: (c, i) {
             return ListTile(
                title: Text(name[i]),
@@ -31,28 +45,22 @@ class _MyAppState extends State<MyApp> {
       }),
 
       floatingActionButton: FloatingActionButton(
-        child: Text(a.toString()),
         onPressed: () {
           showDialog(context: context, builder: (context) {
-            return DialogUI(state: a, func: IncreaseNum);
+            return DialogUI(addOne: addOne, addContact: addContact);
           });
         },
       ),
     );
   }
-
-  IncreaseNum()
-  {
-    setState(() {
-      a++;
-    });
-  }
 }
 
 class DialogUI extends StatelessWidget {
-  DialogUI({Key? key, this.state, this.func}) : super(key: key);
-  var state;
-  var func;
+  DialogUI({Key? key, this.addOne, this.addContact}) : super(key: key);
+  final addOne;
+  final addContact;
+  var inputData = TextEditingController();
+  // var inputData2 = '';
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -62,13 +70,12 @@ class DialogUI extends StatelessWidget {
           child:
             Column(
                 children: [
-                TextField(),
+                TextField(controller: inputData,),
                 TextButton(
-                    child: Text('완료' + state.toString()),
-                    onPressed: (){
-                      func();
-                      Navigator.pop(context);
-                    },
+                  child: Text('완료'), onPressed: () {
+                  addContact(inputData.text);
+                  Navigator.pop(context);
+                },
                 ),
                 TextButton(
                   child: Text('취소'),
